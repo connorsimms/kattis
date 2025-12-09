@@ -25,8 +25,7 @@ int main()
 
         char deli;
         int m, d; ss >> m >> deli >>  d;
-        --m;
-        --d;
+        --m; --d;
         
         int td = accumulate(md.begin(), md.begin() + m, 0);
         td += d;
