@@ -15,7 +15,6 @@ int main()
 
         if (t % (R + G) <= R) { t += R - (t % (R + G)); }
     }
-
     t += (L - l);
 
     cout << t << '\n';
