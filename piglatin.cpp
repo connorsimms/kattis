@@ -19,10 +19,7 @@ int main()
         string word;
         while (ss >> word)
         {
-            if (isV[word[0]])
-            {
-                cout << word << "yay "; 
-            }
+            if (isV[word[0]]) { cout << word << "yay "; }
             else
             {
                 auto fv = find_if(word.begin(), word.end(), [&](char c) { return isV[c]; });
