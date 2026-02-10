@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <functional>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -6,47 +9,46 @@ int main()
 {
     int n;
     cin >> n;
-    
-    vector<int> weight(n);
 
-    for(int i = 0 ; i < n ; ++i)
+    vector<int> v(n);
+
+    for (int i = 0 ; i < n ; ++i)
     {
-	cin >> weight[i];
+        cin >> v[i];
     }
 
-    vector<int> mem_left(n);
-    vector<int> mem_right(n);
+    int best = 0;
 
-    for(int i = n - 1 ; i >= 0 ; --i)
+    for (int pivot = 0 ; pivot < n ; ++pivot)
     {
-	mem_left[i] = 1;
+        vector<int> lis(n); int ik = 1;
+        vector<int> lds(n); int dk = 1;
 
-	for(int j = i + 1 ; j < n; ++j)
-	{
-	    if(weight[j] < weight[i]) { // add to left side
-		mem_left[i] = max(mem_left[i], mem_left[j] + 1);	
-	    }
-	}
+        lis[0] = v[pivot];
+        lds[0] = v[pivot];
+
+        for (int i = pivot + 1 ; i < n ; ++i)
+        {
+            if (v[i] < lis[0]) continue;
+            int ipos = lower_bound(lis.begin(), lis.begin() + ik, v[i]) - lis.begin();
+
+            lis[ipos] = v[i];
+
+            if (ipos == ik) ++ik;
+        }
+
+        for (int i = pivot + 1 ; i < n ; ++i)
+        {
+            if (v[i] > lis[0]) continue;
+            int dpos = lower_bound(lds.begin(), lds.begin() + dk, v[i], greater<int>()) - lds.begin();
+
+            lds[dpos] = v[i];
+
+            if (dpos == dk) ++dk;
+        }
+
+        best = max(best, dk + ik - 1);
     }
 
-    for(int i = n - 1 ; i >= 0; --i)
-    {
-	mem_right[i] = 1;
-
-	for(int j = i + 1 ; j < n; ++j)
-	{
-	    if(weight[j] > weight[i]) { // add to left side
-		mem_right[i] = max(mem_right[i], mem_right[j] + 1);	
-	    }
-	}
-    }
-
-    int ans = 0;
-
-    for(int i = 0 ; i < n ; ++i)
-    {
-	ans = max(ans, mem_left[i] + mem_right[i] - 1);
-    }
-
-    cout << ans << '\n';
+    cout << best << '\n';
 }
