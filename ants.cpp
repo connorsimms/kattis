@@ -7,17 +7,18 @@ int main()
     while (t--)
     {
         int l, n; cin >> l >> n;
-        vector<int> fast(l + 1), slow(l + 1);
+
+        int fast = 0;
+        int slow = 0;
+
         for (int i = 0; i < n; ++i)
         {
             int x; cin >> x;
-            if (x < l / 2)
-            {
-                fast[x] = -1;
-                slow[x] = 1;
-            }
+
+            slow = max(slow, max(x, l - x));
+            fast = max(fast, min(x, l - x));
         }
 
-
+        cout << fast << " " << slow << '\n';
     }
 }
